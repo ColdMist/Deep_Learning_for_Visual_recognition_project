@@ -18,6 +18,7 @@ from models.vgg import *
 from collections import defaultdict
 #from IPython.display import clear_output
 from sklearn.preprocessing import LabelEncoder
+import torchvision.models as models
 
 
 use_cuda = True
@@ -71,9 +72,12 @@ test_loader = torch.utils.data.DataLoader(test_dataset,shuffle=True,
             batch_size=batch_size, pin_memory=False) #num_workers=1)
 
 
-model = VGGNet(num_class=N_CLASSES).to(device) #VGG style model
+#model = VGGNet(num_class=N_CLASSES).to(device) #VGG style model
+model = models.vgg16(pretrained=True)
 criterion = nn.CrossEntropyLoss() #Use cross entropy loss
 
+#TODO
+#freeze the first few layers parameters
 optimizer = torch.optim.Adam(model.parameters(),lr=LEARNING_RATE)
 
 use_gpu = True
